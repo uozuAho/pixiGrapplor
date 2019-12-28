@@ -1,19 +1,15 @@
 import * as pixi from 'pixi.js';
+import matter from 'matter-js';
 
 export class Grapplor {
-    private WIDTH = 640;
-    private HEIGHT = 480;
-
-    private _app = new pixi.Application({
-        width: this.WIDTH,
-        height: this.HEIGHT
-    });
+    private _app = new pixi.Application();
 
     private _keysDown: KeysDown;
 
     public run = () => {
         document.querySelector('#gamediv').appendChild(this._app.view);
         window.addEventListener('resize', this.resize);
+        const engine = matter.Engine.create();
 
         this.resize();
 
@@ -24,6 +20,7 @@ export class Grapplor {
         const dude = new Dude(300, 380);
         const dudeRenderer = new DudeRenderer(dude);
         dudeRenderer.loadAssets(this._app);
+        dude.addPhysics(engine);
 
         const block = new Block(100, 420, 300, 20);
         const blockRenderer = new BlockRenderer(block);
@@ -31,6 +28,7 @@ export class Grapplor {
 
         this._app.ticker.add((elapsedFrames: number) => {
             const ms = this._app.ticker.elapsedMS;
+            matter.Engine.update(engine, ms);
             dude.update(ms, this._keysDown);
             dudeRenderer.update();
         });
@@ -80,18 +78,28 @@ class KeysDown {
 
 class Dude {
     public _position: Point2d;
+    private _physicsBody: matter.Body;
 
     public constructor(x: number, y: number) {
         this._position = new Point2d(x, y);
     }
 
     public update = (elapsedMs: number, keysDown: KeysDown) => {
+        this._position.x = this._physicsBody.position.x;
+        this._position.y = this._physicsBody.position.y;
         if (keysDown.left) {
             this._position.x -= 5;
         }
         if (keysDown.right) {
             this._position.x += 5;
         }
+    }
+
+    public addPhysics = (engine: matter.Engine) => {
+        const x = this._position.x;
+        const y = this._position.y;
+        this._physicsBody = matter.Bodies.rectangle(x, y, 20, 20); // todo: size
+        matter.World.add(engine.world, this._physicsBody);
     }
 }
 

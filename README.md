@@ -12,7 +12,7 @@ doesn't change length once attached.
 - separate renderers from objects *done*
 - move dude left and right on block *done*
 - game display is responsive to window size *done, sort of*
-- dude falls
+- dude falls *done*
 - dude collides with ground
 - dude can jump
 - dude cannot go off screen
