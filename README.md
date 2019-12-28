@@ -11,7 +11,9 @@ doesn't change length once attached.
 - show dude on ground block *done*
 - separate renderers from objects *done*
 - move dude left and right on block *done*
-- game display is responsive to window size
+- game display is responsive to window size *done, sort of*
+- dude falls
+- dude collides with ground
 - dude can jump
 - dude cannot go off screen
 - dude can shoot grapple

@@ -11,8 +11,12 @@ export class Grapplor {
 
     private _keysDown: KeysDown;
 
-    public run() {
-        document.body.appendChild(this._app.view);
+    public run = () => {
+        document.querySelector('#gamediv').appendChild(this._app.view);
+        window.addEventListener('resize', this.resize);
+
+        this.resize();
+
         this._keysDown = new KeysDown();
 
         this.addKeyHandlers();
@@ -30,6 +34,13 @@ export class Grapplor {
             dude.update(ms, this._keysDown);
             dudeRenderer.update();
         });
+    }
+
+    private resize = () => {
+        // HACK: `as any`: Property 'clientWidth' does not exist
+        //       on type 'Node & ParentNode' (it does, bad type)
+        const parent = this._app.view.parentNode as any;
+        this._app.renderer.resize(parent.clientWidth, parent.clientHeight);
     }
 
     private addKeyHandlers = () => {
