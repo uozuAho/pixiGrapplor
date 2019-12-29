@@ -1,6 +1,5 @@
 import matter from 'matter-js';
 import { PhysicsEnvironment } from '../PhysicsEnvironment';
-import { PhysicalObject } from '../PhysicalObject';
 
 export class MatterPhysicsEnvironment implements PhysicsEnvironment {
     private _engine: matter.Engine;
@@ -9,7 +8,13 @@ export class MatterPhysicsEnvironment implements PhysicsEnvironment {
         this._engine = engine;
     }
 
-    public addObject(object: PhysicalObject) {
-        matter.World.add(this._engine.world, object.body);
+    public addFixedRect(
+        centerXpx: number,
+        centerYpx: number,
+        width: number,
+        height: number)
+    {
+        const rect = matter.Bodies.rectangle(centerXpx, centerYpx, width, height, {isStatic: true});
+        matter.World.add(this._engine.world, rect);
     }
 }

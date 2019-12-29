@@ -1,5 +1,8 @@
-import { PhysicalObject } from "./PhysicalObject";
-
 export interface PhysicsEnvironment {
-    addObject(object: PhysicalObject): void;
+    addFixedRect(
+        centerXpx: number,
+        centerYpx: number,
+        width: number,
+        height: number
+    ): void;
 }
