@@ -15,6 +15,7 @@ doesn't change length once attached.
 - dude falls *done*
 - dude collides with ground *done*
 - sync render/matter coords (matter position = center of mass, pixi position = top left) *done*
+- remove matter dependency from game objects
 - dude can jump
 - dude cannot go off screen
 - dude can shoot grapple
