@@ -1,6 +1,7 @@
 import * as pixi from 'pixi.js';
 import matter from 'matter-js';
 import { Block } from './Block';
+import { MatterPhysicsEnvironment } from "./physics/matter-physics/MatterPhysicsEnvironment";
 import { BlockRenderer } from './BlockRenderer';
 import { Dude } from './Dude';
 import { DudeRenderer } from './DudeRenderer';
@@ -15,6 +16,7 @@ export class Grapplor {
         document.querySelector('#gamediv').appendChild(this._app.view);
         window.addEventListener('resize', this.resize);
         const engine = matter.Engine.create();
+        const physicsEnv = new MatterPhysicsEnvironment(engine);
 
         this.resize();
 
@@ -28,7 +30,7 @@ export class Grapplor {
         dude.addPhysics(engine);
 
         const block = new Block(300, 420, 300, 20);
-        block.addPhysics(engine);
+        block.addPhysics(physicsEnv);
         const blockRenderer = new BlockRenderer(block);
         blockRenderer.addToStage(this._app.stage);
 

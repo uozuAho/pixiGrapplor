@@ -1,12 +1,14 @@
-import matter from 'matter-js';
 import { Point2d } from "./Point2d";
+import { PhysicsEnvironment } from './physics/PhysicsEnvironment';
+import { PhysicalObject } from './physics/PhysicalObject';
+import { FixedRectangle } from './physics/matter-physics/FixedRectangle';
 
 export class Block {
     public centerPx: Point2d;
     public widthPx: number;
     public heightPx: number;
 
-    private _physicsBody: matter.Body;
+    private _physicsBody: PhysicalObject;
 
     public constructor(x: number, y: number, width: number, height: number) {
         this.centerPx = new Point2d(x, y);
@@ -14,10 +16,11 @@ export class Block {
         this.heightPx = height;
     }
 
-    public addPhysics = (engine: matter.Engine) => {
+    public addPhysics = (env: PhysicsEnvironment) => {
         const { x, y } = this.centerPx;
-        this._physicsBody = matter.Bodies.rectangle(x, y, this.widthPx, this.heightPx, { isStatic: true });
-        matter.World.add(engine.world, this._physicsBody);
+        // todo: remove matter dep from rectangle
+        this._physicsBody = new FixedRectangle(x, y, this.widthPx, this.heightPx);
+        env.addObject(this._physicsBody);
     };
 
     public topLeft = (): Point2d => {
