@@ -17,18 +17,19 @@ export class Grapplor {
 
         this.addKeyHandlers();
 
-        const dude = new Dude(300, 380);
+        const dude = new Dude(300, 350);
         const dudeRenderer = new DudeRenderer(dude);
         dudeRenderer.loadAssets(this._app);
         dude.addPhysics(engine);
 
-        const block = new Block(100, 420, 300, 20);
+        const block = new Block(300, 420, 300, 20);
+        block.addPhysics(engine);
         const blockRenderer = new BlockRenderer(block);
         blockRenderer.addToStage(this._app.stage);
 
         this._app.ticker.add((elapsedFrames: number) => {
             const ms = this._app.ticker.elapsedMS;
-            matter.Engine.update(engine, ms);
+            matter.Engine.update(engine, 5);
             dude.update(ms, this._keysDown);
             dudeRenderer.update();
         });
@@ -77,29 +78,37 @@ class KeysDown {
 }
 
 class Dude {
-    public _position: Point2d;
+    public centerPx: Point2d;
+    public heightPx = 32;
+    public widthPx = 32;
+
     private _physicsBody: matter.Body;
 
     public constructor(x: number, y: number) {
-        this._position = new Point2d(x, y);
+        this.centerPx = new Point2d(x, y);
     }
 
     public update = (elapsedMs: number, keysDown: KeysDown) => {
-        this._position.x = this._physicsBody.position.x;
-        this._position.y = this._physicsBody.position.y;
+        this.centerPx.x = this._physicsBody.position.x;
+        this.centerPx.y = this._physicsBody.position.y;
         if (keysDown.left) {
-            this._position.x -= 5;
+            this.centerPx.x -= 5;
         }
         if (keysDown.right) {
-            this._position.x += 5;
+            this.centerPx.x += 5;
         }
     }
 
     public addPhysics = (engine: matter.Engine) => {
-        const x = this._position.x;
-        const y = this._position.y;
-        this._physicsBody = matter.Bodies.rectangle(x, y, 20, 20); // todo: size
+        const {x, y} = this.centerPx;
+        this._physicsBody = matter.Bodies.rectangle(x, y, this.widthPx, this.heightPx);
         matter.World.add(engine.world, this._physicsBody);
+    }
+
+    public topLeft = (): Point2d => {
+        const x = this.centerPx.x - this.widthPx / 2;
+        const y = this.centerPx.y - this.heightPx / 2;
+        return new Point2d(x, y);
     }
 }
 
@@ -116,8 +125,9 @@ class DudeRenderer {
         const loader = pixi.Loader.shared;
         loader.add('dude', 'img/hero.png').load((loader, resources) => {
             const sprite = new pixi.Sprite(resources.dude.texture);
-            sprite.x = this._dude._position.x;
-            sprite.y = this._dude._position.y;
+            const topLeft = this._dude.topLeft();
+            sprite.x = topLeft.x;
+            sprite.y = topLeft.y;
 
             app.stage.addChild(sprite);
             this._sprite = sprite;
@@ -128,21 +138,37 @@ class DudeRenderer {
 
     public update = () => {
         if (this._assetsLoaded) {
-            this._sprite.x = this._dude._position.x;
-            this._sprite.y = this._dude._position.y;
+            const topLeft = this._dude.topLeft();
+            this._sprite.x = topLeft.x;
+            this._sprite.y = topLeft.y;
         }
     }
 }
 
 class Block {
-    public _coordsPx: Point2d;
-    public _widthPx: number;
-    public _heightPx: number;
+    public centerPx: Point2d;
+    public widthPx: number;
+    public heightPx: number;
+
+    private _physicsBody: matter.Body;
 
     public constructor(x: number, y: number, width: number, height: number) {
-        this._coordsPx = new Point2d(x, y);
-        this._widthPx = width;
-        this._heightPx = height;
+        this.centerPx = new Point2d(x, y);
+        this.widthPx = width;
+        this.heightPx = height;
+    }
+
+    public addPhysics = (engine: matter.Engine) => {
+        const {x, y} = this.centerPx;
+        this._physicsBody = matter.Bodies.rectangle(
+            x, y, this.widthPx, this.heightPx, {isStatic: true});
+        matter.World.add(engine.world, this._physicsBody);
+    }
+
+    public topLeft = (): Point2d => {
+        const x = this.centerPx.x - this.widthPx / 2;
+        const y = this.centerPx.y - this.heightPx / 2;
+        return new Point2d(x, y);
     }
 }
 
@@ -158,8 +184,8 @@ class BlockRenderer {
 
     public render = () => {
         this._graphics.beginFill(0xaaaaaa);
-        const {x, y} = this._block._coordsPx;
-        this._graphics.drawRect(x, y, this._block._widthPx, this._block._heightPx);
+        const topLeft = this._block.topLeft();
+        this._graphics.drawRect(topLeft.x, topLeft.y, this._block.widthPx, this._block.heightPx);
         this._graphics.endFill();
     }
 

@@ -13,7 +13,8 @@ doesn't change length once attached.
 - move dude left and right on block *done*
 - game display is responsive to window size *done, sort of*
 - dude falls *done*
-- dude collides with ground
+- dude collides with ground *done*
+- sync render/matter coords (matter position = center of mass, pixi position = top left) *done*
 - dude can jump
 - dude cannot go off screen
 - dude can shoot grapple
