@@ -1,11 +1,10 @@
 import * as pixi from 'pixi.js';
-import matter from 'matter-js';
 import { Block } from './Block';
-import { MatterPhysicsEnvironment } from "./physics/matter-physics/MatterPhysicsEnvironment";
 import { BlockRenderer } from './BlockRenderer';
 import { Dude } from './Dude';
 import { DudeRenderer } from './DudeRenderer';
 import { KeysDown } from './KeysDown';
+import { newPhysicsEnvironment } from './physics/PhysicsEnvironmentFactory';
 
 export class Grapplor {
     private _app = new pixi.Application();
@@ -15,8 +14,7 @@ export class Grapplor {
     public run = () => {
         document.querySelector('#gamediv').appendChild(this._app.view);
         window.addEventListener('resize', this.resize);
-        const engine = matter.Engine.create();
-        const physicsEnv = new MatterPhysicsEnvironment(engine);
+        const physicsEnv = newPhysicsEnvironment();
 
         this.resize();
 
@@ -27,7 +25,7 @@ export class Grapplor {
         const dude = new Dude(300, 350);
         const dudeRenderer = new DudeRenderer(dude);
         dudeRenderer.loadAssets(this._app);
-        dude.addPhysics(engine);
+        dude.addPhysics(physicsEnv);
 
         const block = new Block(300, 420, 300, 20);
         block.addPhysics(physicsEnv);
@@ -36,7 +34,7 @@ export class Grapplor {
 
         this._app.ticker.add((elapsedFrames: number) => {
             const ms = this._app.ticker.elapsedMS;
-            matter.Engine.update(engine, 5);
+            physicsEnv.update(5);
             dude.update(ms, this._keysDown);
             dudeRenderer.update();
         });
@@ -66,7 +64,7 @@ export class Grapplor {
             case 39: this._keysDown.right = true; break;
         }
     };
-    
+
     private handleKeyUp = (keyCode: number) => {
         switch (keyCode) {
             case 38: this._keysDown.up    = false; break;

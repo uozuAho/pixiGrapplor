@@ -1,21 +1,22 @@
-import matter from 'matter-js';
 import { KeysDown } from "./KeysDown";
 import { Point2d } from "./Point2d";
+import { PhysicsEnvironment, PhysicalBody } from './physics/PhysicsEnvironment';
 
 export class Dude {
     public centerPx: Point2d;
     public heightPx = 32;
     public widthPx = 32;
 
-    private _physicsBody: matter.Body;
+    private _physicsBody: PhysicalBody;
 
     public constructor(x: number, y: number) {
         this.centerPx = new Point2d(x, y);
     }
 
     public update = (elapsedMs: number, keysDown: KeysDown) => {
-        this.centerPx.x = this._physicsBody.position.x;
-        this.centerPx.y = this._physicsBody.position.y;
+        const {x, y} = this._physicsBody.position();
+        this.centerPx.x = x;
+        this.centerPx.y = y;
         if (keysDown.left) {
             this.centerPx.x -= 5;
         }
@@ -24,10 +25,9 @@ export class Dude {
         }
     };
 
-    public addPhysics = (engine: matter.Engine) => {
+    public addPhysics = (env: PhysicsEnvironment) => {
         const { x, y } = this.centerPx;
-        this._physicsBody = matter.Bodies.rectangle(x, y, this.widthPx, this.heightPx);
-        matter.World.add(engine.world, this._physicsBody);
+        this._physicsBody = env.addDynamicRect(x, y, this.widthPx, this.heightPx);
     };
 
     public topLeft = (): Point2d => {
