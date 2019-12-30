@@ -17,8 +17,9 @@ doesn't change length once attached.
 - sync render/matter coords (matter position = center of mass, pixi position = top left) *done*
 - remove matter dependency from game objects *done*
 - move dude left and right on block (fix) *done*
-- dude can jump
 - dude cannot go off screen
+- dude can jump
+- rotate rendered dude as per physics model
 - dude can shoot grapple
     - grapple doesn't attach
     - grapple cancels after fixed length
