@@ -19,6 +19,7 @@ export interface PhysicsEnvironment {
 }
 
 export interface PhysicalBody {
+    accelerateX: (accelerationPxPerSec: number) => void;
     position: () => Point2d;
     setPosition: (pos: Point2d) => void;
 }

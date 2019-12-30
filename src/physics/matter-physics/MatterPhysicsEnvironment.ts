@@ -46,4 +46,9 @@ class MatterBody implements PhysicalBody {
         this._body.position.x = pos.x;
         this._body.position.y = pos.y;
     }
+
+    public accelerateX = (accelerationPxPerSec: number) => {
+        const fx = this._body.mass * accelerationPxPerSec / 100;
+        this._body.force = {x: fx, y: 0};
+    }
 }

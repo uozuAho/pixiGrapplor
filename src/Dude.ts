@@ -18,10 +18,10 @@ export class Dude {
         this.centerPx.x = x;
         this.centerPx.y = y;
         if (keysDown.left) {
-            this.centerPx.x -= 5;
+            this._physicsBody.accelerateX(-1);
         }
         if (keysDown.right) {
-            this.centerPx.x += 5;
+            this._physicsBody.accelerateX(1);
         }
     };
 
