@@ -27,10 +27,22 @@ export class Grapplor {
         dudeRenderer.loadAssets(this._app);
         dude.addPhysics(physicsEnv);
 
-        const block = new Block(300, 420, 300, 20);
-        block.addPhysics(physicsEnv);
-        const blockRenderer = new BlockRenderer(block);
-        blockRenderer.addToStage(this._app.stage);
+        const middleBlock = new Block(300, 420, 300, 20);
+        middleBlock.addPhysics(physicsEnv);
+        const middleBlockRenderer = new BlockRenderer(middleBlock);
+        middleBlockRenderer.addToStage(this._app.stage);
+
+        for (const dims of [
+        //   x    y    w  h
+            [0,   300, 2,   600],
+            [600, 300, 2,   600],
+            [300, 600, 600, 2]
+        ]) {
+            const worldEdgeBarrier = new Block(dims[0], dims[1], dims[2], dims[3]);
+            worldEdgeBarrier.addPhysics(physicsEnv);
+            const worldEdgeBarrierRenderer = new BlockRenderer(worldEdgeBarrier);
+            worldEdgeBarrierRenderer.addToStage(this._app.stage);
+        }
 
         this._app.ticker.add((elapsedFrames: number) => {
             const ms = this._app.ticker.elapsedMS;

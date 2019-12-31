@@ -1,7 +1,7 @@
 {
   "name": "pixi-grapplor",
   "version": "0.0.1",
-  "description": "a grappling game with pixi.js",
+  "description": "a grappling game using pixi.js",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --port 9000 --inline --progress --profile --colors --watch --content-base src/ --mode development",
