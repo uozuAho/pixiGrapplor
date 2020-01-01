@@ -60,6 +60,7 @@ export class Grapplor {
             case 40: this._keysDown.down  = true; break;
             case 37: this._keysDown.left  = true; break;
             case 39: this._keysDown.right = true; break;
+            case 32: this._keysDown.space = true; break;
         }
     };
 
@@ -69,6 +70,7 @@ export class Grapplor {
             case 40: this._keysDown.down  = false; break;
             case 37: this._keysDown.left  = false; break;
             case 39: this._keysDown.right = false; break;
+            case 32: this._keysDown.space = false; break;
         }
     };
 

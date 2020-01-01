@@ -24,6 +24,12 @@ export class Dude {
         if (keysDown.right) {
             this._physicsBody.accelerateX(1);
         }
+        if (keysDown.space) {
+            if (this._canJump) {
+                this._physicsBody.accelerateY(-20);
+                this._canJump = false;
+            }
+        }
     };
 
     public addPhysics = (env: PhysicsEnvironment) => {

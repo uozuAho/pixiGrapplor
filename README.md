@@ -18,7 +18,9 @@ doesn't change length once attached.
 - remove matter dependency from game objects *done*
 - move dude left and right on block (fix) *done*
 - dude cannot go off screen *done*
-- dude can jump
+- dude can jump *done*
+- fix gravity/speed/etc to make movement more snappy
+- only reset 'can jump' when dude collides with floor
 - rotate rendered dude as per physics model
 - dude can shoot grapple
     - grapple doesn't attach
