@@ -8,6 +8,7 @@ export class Dude {
     public widthPx = 32;
 
     private _physicsBody: PhysicalBody;
+    private _canJump = false;
 
     public constructor(x: number, y: number) {
         this.centerPx = new Point2d(x, y);
@@ -28,6 +29,9 @@ export class Dude {
     public addPhysics = (env: PhysicsEnvironment) => {
         const { x, y } = this.centerPx;
         this._physicsBody = env.addDynamicRect(x, y, this.widthPx, this.heightPx);
+        this._physicsBody.addOnCollisionStart(env, collision => {
+            this._canJump = true;
+        });
     };
 
     public topLeft = (): Point2d => {

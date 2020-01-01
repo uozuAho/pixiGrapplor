@@ -1,5 +1,7 @@
 import { Point2d } from "../Point2d";
 
+export type CollisionCallback = (collision: Collision) => void;
+
 export interface PhysicsEnvironment {
     update: (elapsedMs: number) => void;
 
@@ -22,4 +24,10 @@ export interface PhysicalBody {
     accelerateX: (accelerationPxPerSec: number) => void;
     position: () => Point2d;
     setPosition: (pos: Point2d) => void;
+    addOnCollisionStart: (env: PhysicsEnvironment, callback: CollisionCallback) => void;
+}
+
+export interface Collision {
+    thisBody: PhysicalBody,
+    otherBody: PhysicalBody
 }

@@ -1,5 +1,10 @@
 import matter from 'matter-js';
-import { PhysicsEnvironment, PhysicalBody } from '../PhysicsEnvironment';
+import {
+    PhysicsEnvironment,
+    PhysicalBody,
+    Collision,
+    CollisionCallback
+} from '../PhysicsEnvironment';
 import { Point2d } from '../../Point2d';
 
 export class MatterPhysicsEnvironment implements PhysicsEnvironment {
@@ -51,4 +56,24 @@ class MatterBody implements PhysicalBody {
         const fx = this._body.mass * accelerationPxPerSec / 100;
         this._body.force = {x: fx, y: 0};
     }
+
+    public addOnCollisionStart = (env: PhysicsEnvironment, callback: CollisionCallback) => {
+        // hack: Access internal engine to attach collision listener.
+        //       Body collision listeners are not possible in matter-js without plugins
+        const engine = (env as any)._engine;
+        matter.Events.on(engine, 'collisionStart', event => {
+            for (const pair of event.pairs) {
+                if (pair.bodyA === this._body) {
+                    callback(new MatterCollision(this, new MatterBody(pair.bodyB)));
+                }
+                if (pair.bodyB === this._body) {
+                    callback(new MatterCollision(this, new MatterBody(pair.bodyA)));
+                }
+            }
+        });
+    };
+}
+
+class MatterCollision implements Collision {
+    constructor(public thisBody: PhysicalBody, public otherBody: PhysicalBody) {}
 }
