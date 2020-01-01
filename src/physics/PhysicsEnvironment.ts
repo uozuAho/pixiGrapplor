@@ -21,9 +21,10 @@ export interface PhysicsEnvironment {
 }
 
 export interface PhysicalBody {
+    speed: () => number;
+    position: () => Point2d;
     accelerateX: (accelerationPxPerSec: number) => void;
     accelerateY: (accelerationPxPerSec: number) => void;
-    position: () => Point2d;
     setPosition: (pos: Point2d) => void;
     addOnCollisionStart: (env: PhysicsEnvironment, callback: CollisionCallback) => void;
 }

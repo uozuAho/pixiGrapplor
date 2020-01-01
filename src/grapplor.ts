@@ -31,8 +31,12 @@ export class Grapplor {
         this.createWorld(physicsEnv);
 
         this._app.ticker.add((elapsedFrames: number) => {
-            const ms = this._app.ticker.elapsedMS;
-            physicsEnv.update(5);
+            let ms = this._app.ticker.elapsedMS;
+            // hack: Keep timestep at/under 20ms
+            //       Rendering/reload times often blow out due to... browser?
+            //       Large timesteps cause dude to fall through walls, lol.
+            if (ms > 20) { ms = 20 };
+            physicsEnv.update(ms);
             dude.update(ms, this._keysDown);
             dudeRenderer.update();
         });
@@ -83,9 +87,9 @@ export class Grapplor {
         // walls at edge of world
         for (const dims of [
             //   x    y    w  h
-            [0, 300, 2, 600],
-            [600, 300, 2, 600],
-            [300, 600, 600, 2]
+            [0,   300, 10,  600],
+            [600, 300, 10,  600],
+            [300, 600, 600, 10]
         ]) {
             const worldEdgeBarrier = new Block(dims[0], dims[1], dims[2], dims[3]);
             worldEdgeBarrier.addPhysics(physicsEnv);

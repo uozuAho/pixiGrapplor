@@ -47,18 +47,20 @@ class MatterBody implements PhysicalBody {
         return new Point2d(x, y);
     }
 
+    public speed = () => this._body.speed;
+
     public setPosition = (pos: Point2d) => {
         this._body.position.x = pos.x;
         this._body.position.y = pos.y;
     }
 
     public accelerateX = (accelerationPxPerSec: number) => {
-        const fx = this._body.mass * accelerationPxPerSec / 100;
+        const fx = this._body.mass * accelerationPxPerSec / 500;
         this._body.force = {x: fx, y: this._body.force.y};
     }
 
     public accelerateY = (accelerationPxPerSec: number) => {
-        const fy = this._body.mass * accelerationPxPerSec / 100;
+        const fy = this._body.mass * accelerationPxPerSec / 500;
         this._body.force = {x: this._body.force.x, y: fy};
     }
 

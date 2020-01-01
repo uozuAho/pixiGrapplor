@@ -19,14 +19,18 @@ export class Dude {
         this.centerPx.x = x;
         this.centerPx.y = y;
         if (keysDown.left) {
-            this._physicsBody.accelerateX(-1);
+            if (this._physicsBody.speed() < 10) {
+                this._physicsBody.accelerateX(-1);
+            }
         }
         if (keysDown.right) {
-            this._physicsBody.accelerateX(1);
+            if (this._physicsBody.speed() < 10) {
+                this._physicsBody.accelerateX(1);
+            }
         }
         if (keysDown.space) {
             if (this._canJump) {
-                this._physicsBody.accelerateY(-20);
+                this._physicsBody.accelerateY(-10);
                 this._canJump = false;
             }
         }
