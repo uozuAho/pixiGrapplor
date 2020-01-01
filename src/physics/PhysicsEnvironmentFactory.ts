@@ -1,4 +1,4 @@
-import { PhysicsEnvironment } from './PhysicsEnvironment';
+import { PhysicsEnvironment } from "./PhysicsEnvironment";
 import { MatterPhysicsEnvironment } from './matter-physics/MatterPhysicsEnvironment';
 
 export function newPhysicsEnvironment(): PhysicsEnvironment {

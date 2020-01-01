@@ -1,6 +1,7 @@
 import { KeysDown } from "./KeysDown";
 import { Point2d } from "./Point2d";
-import { PhysicsEnvironment, PhysicalBody } from './physics/PhysicsEnvironment';
+import { PhysicalBody } from './physics/PhysicsEnvironment';
+import { PhysicsEnvironment } from "./physics/PhysicsEnvironment";
 
 export class Dude {
     public centerPx: Point2d;

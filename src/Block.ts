@@ -1,5 +1,5 @@
 import { Point2d } from "./Point2d";
-import { PhysicsEnvironment } from './physics/PhysicsEnvironment';
+import { PhysicsEnvironment } from "./physics/PhysicsEnvironment";
 
 export class Block {
     public centerPx: Point2d;

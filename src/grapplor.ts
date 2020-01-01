@@ -5,7 +5,7 @@ import { Dude } from './Dude';
 import { DudeRenderer } from './DudeRenderer';
 import { KeysDown } from './KeysDown';
 import { newPhysicsEnvironment } from './physics/PhysicsEnvironmentFactory';
-import { PhysicsEnvironment } from './physics/PhysicsEnvironment';
+import { PhysicsEnvironment } from "./physics/PhysicsEnvironment";
 
 export class Grapplor {
     private _app = new pixi.Application();
