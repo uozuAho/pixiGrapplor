@@ -24,7 +24,7 @@ export class MatterPhysicsEnvironment implements PhysicsEnvironment {
         matter.World.add(this._engine.world, rect);
     }
 
-    addDynamicRect(
+    public addDynamicRect(
         centerXpx: number,
         centerYpx: number,
         widthPx: number,
@@ -34,5 +34,16 @@ export class MatterPhysicsEnvironment implements PhysicsEnvironment {
         const rect = matter.Bodies.rectangle(centerXpx, centerYpx, widthPx, heightPx);
         matter.World.add(this._engine.world, rect);
         return new MatterBody(rect);
+    }
+
+    public addDynamicCircle(
+        centerXpx: number,
+        centerYpx: number,
+        radiusPx: number
+    ): PhysicalBody
+    {
+        const circle = matter.Bodies.circle(centerXpx, centerYpx, radiusPx);
+        matter.World.add(this._engine.world, circle);
+        return new MatterBody(circle);
     }
 }

@@ -3,6 +3,7 @@ import { Point2d } from "../Point2d";
 export type CollisionCallback = (collision: Collision) => void;
 
 export interface PhysicsEnvironment {
+    
     update: (elapsedMs: number) => void;
 
     addFixedRect(
@@ -17,6 +18,12 @@ export interface PhysicsEnvironment {
         y: number,
         widthPx: number,
         heightPx: number
+    ): PhysicalBody;
+
+    addDynamicCircle(
+        centerXpx: number,
+        centerYpx: number,
+        radiusPx: number
     ): PhysicalBody;
 }
 

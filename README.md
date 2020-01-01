@@ -19,12 +19,12 @@ doesn't change length once attached.
 - move dude left and right on block (fix) *done*
 - dude cannot go off screen *done*
 - dude can jump *done*
-- fix gravity/speed/etc to make movement more snappy
-- only reset 'can jump' when dude collides with floor
-- rotate rendered dude as per physics model
+- fix gravity/speed/etc to make movement more snappy *done*
+- make dude physical object a circle *done*
 - dude can shoot grapple
     - grapple doesn't attach
     - grapple cancels after fixed length
+- don't use matter for platform running?
 - re-shoot grapple at any time. re-shooting cancels previous grapple
 - grapple attaches to blocks
     - check swinging behaviour here. need physics? does it just work?
