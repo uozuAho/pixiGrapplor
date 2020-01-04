@@ -23,11 +23,12 @@ export class DudeRenderer {
         });
     }
 
-    public update = () => {
+    public render = () => {
         if (this._assetsLoaded) {
             const topLeft = this._dude.topLeft();
             this._sprite.x = topLeft.x;
             this._sprite.y = topLeft.y;
+            // pixi renders the sprite automatically
         }
     };
 }

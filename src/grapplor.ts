@@ -6,6 +6,8 @@ import { DudeRenderer } from './DudeRenderer';
 import { KeysDown } from './KeysDown';
 import { newPhysicsEnvironment } from './physics/PhysicsEnvironmentFactory';
 import { PhysicsEnvironment } from "./physics/PhysicsEnvironment";
+import { Grapple } from './Grapple';
+import { GrappleRenderer } from './GrappleRenderer';
 
 export class Grapplor {
     private _app = new pixi.Application();
@@ -28,6 +30,10 @@ export class Grapplor {
         dudeRenderer.loadAssets(this._app);
         dude.addPhysics(physicsEnv);
 
+        const grapple = new Grapple(physicsEnv);
+        const grappleRenderer = new GrappleRenderer(grapple, this._app);
+        dude.setGrapple(grapple);
+
         this.createWorld(physicsEnv);
 
         this._app.ticker.add((elapsedFrames: number) => {
@@ -38,7 +44,8 @@ export class Grapplor {
             if (ms > 20) { ms = 20 };
             physicsEnv.update(ms);
             dude.update(ms, this._keysDown);
-            dudeRenderer.update();
+            dudeRenderer.render();
+            grappleRenderer.render();
         });
     }
 
@@ -60,21 +67,23 @@ export class Grapplor {
 
     private handleKeyDown = (keyCode: number) => {
         switch (keyCode) {
-            case 38: this._keysDown.up    = true; break;
-            case 40: this._keysDown.down  = true; break;
-            case 37: this._keysDown.left  = true; break;
-            case 39: this._keysDown.right = true; break;
-            case 32: this._keysDown.space = true; break;
+            case 38: this._keysDown.up      = true; break;
+            case 40: this._keysDown.down    = true; break;
+            case 37: this._keysDown.left    = true; break;
+            case 39: this._keysDown.right   = true; break;
+            case 32: this._keysDown.jump    = true; break; // space
+            case 81: this._keysDown.grapple = true; break; // q
         }
     };
 
     private handleKeyUp = (keyCode: number) => {
         switch (keyCode) {
-            case 38: this._keysDown.up    = false; break;
-            case 40: this._keysDown.down  = false; break;
-            case 37: this._keysDown.left  = false; break;
-            case 39: this._keysDown.right = false; break;
-            case 32: this._keysDown.space = false; break;
+            case 38: this._keysDown.up      = false; break;
+            case 40: this._keysDown.down    = false; break;
+            case 37: this._keysDown.left    = false; break;
+            case 39: this._keysDown.right   = false; break;
+            case 32: this._keysDown.jump    = false; break;
+            case 81: this._keysDown.grapple = false; break;
         }
     };
 

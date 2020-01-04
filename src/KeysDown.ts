@@ -3,5 +3,6 @@ export class KeysDown {
     down = false;
     left = false;
     right = false;
-    space = false;
+    jump = false;
+    grapple = false;
 }

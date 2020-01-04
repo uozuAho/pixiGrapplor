@@ -24,6 +24,8 @@ doesn't change length once attached.
 - dude can shoot grapple
     - grapple doesn't attach
     - grapple cancels after fixed length
+- dude faces left/right
+- grapple shoots in facing direction
 - don't use matter for platform running?
 - re-shoot grapple at any time. re-shooting cancels previous grapple
 - grapple attaches to blocks
