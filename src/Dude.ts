@@ -10,8 +10,9 @@ export class Dude {
     public widthPx = 32;
 
     private _physicsBody: PhysicalBody;
-    private _canJump = false;
     private _grapple: Grapple;
+    private _canJump = false;
+    private _facingLeft = true;
 
     public constructor(x: number, y: number) {
         this.centerPx = new Point2d(x, y);
@@ -26,11 +27,13 @@ export class Dude {
         this.centerPx.x = x;
         this.centerPx.y = y;
         if (keysDown.left) {
+            this._facingLeft = true;
             if (this._physicsBody.speed() < 10) {
                 this._physicsBody.accelerateX(-1);
             }
         }
         if (keysDown.right) {
+            this._facingLeft = false;
             if (this._physicsBody.speed() < 10) {
                 this._physicsBody.accelerateX(1);
             }
@@ -61,4 +64,6 @@ export class Dude {
         const y = this.centerPx.y - this.heightPx / 2;
         return new Point2d(x, y);
     };
+
+    public isFacingLeft = () => this._facingLeft;
 }

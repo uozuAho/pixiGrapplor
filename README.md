@@ -23,7 +23,8 @@ doesn't change length once attached.
 - make dude physical object a circle *done*
 - dude can shoot grapple *done*
     - grapple doesn't attach *done*
-- dude faces left/right
+- dude faces left/right *done*
+- debug rendering: draw object physical shapes
 - grapple shoots in facing direction
 - re-shoot grapple at any time. re-shooting cancels previous grapple
 - tests

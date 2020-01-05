@@ -17,6 +17,7 @@ export class DudeRenderer {
             const topLeft = this._dude.topLeft();
             sprite.x = topLeft.x;
             sprite.y = topLeft.y;
+            sprite.anchor.set(0.5);
             app.stage.addChild(sprite);
             this._sprite = sprite;
             this._assetsLoaded = true;
@@ -26,6 +27,8 @@ export class DudeRenderer {
     public render = () => {
         if (this._assetsLoaded) {
             const topLeft = this._dude.topLeft();
+            const xScale = this._dude.isFacingLeft() ? 1 : -1;
+            this._sprite.scale.x = xScale;
             this._sprite.x = topLeft.x;
             this._sprite.y = topLeft.y;
             // pixi renders the sprite automatically
