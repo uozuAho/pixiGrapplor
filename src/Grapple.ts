@@ -20,13 +20,17 @@ export class Grapple {
 
     public position = () => this._physicalBody.position();
 
-    public launch = (position: Point2d) => {
+    public launch = (position: Point2d, fireLeft: boolean) => {
         if (this.canLaunch()) {
             this.state = GrappleState.fired;
             let {x, y} = position;
-            x += 30; // start away from launcher
+            // start away from launcher
+            const xOffset = fireLeft ? -30 : 30;
+            x += xOffset; 
+            y -= 30;
             this._physicalBody = this._physicsEnv.addDynamicCircle(x, y, 10);
-            this._physicalBody.accelerateX(10);
+            const xAcceleration = fireLeft ? -10 : 10;
+            this._physicalBody.accelerateX(xAcceleration);
             this._physicalBody.accelerateY(-20);
             this._physicalBody.addOnCollisionStart(this._physicsEnv, collision => {
                 this._physicsEnv.removeBody(this._physicalBody);
