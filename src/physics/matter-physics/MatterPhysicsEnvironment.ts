@@ -7,17 +7,19 @@ import { MatterBody } from './MatterBody';
 
 export class MatterPhysicsEnvironment implements PhysicsEnvironment {
     private _engine: matter.Engine;
+    private _bodies: Map<PhysicalBody, matter.Body>;
 
     constructor() {
         this._engine = matter.Engine.create();
+        this._bodies = new Map();
     }
 
     public update = (elapsedMs: number) => matter.Engine.update(this._engine, elapsedMs);
 
     public removeBody = (body: PhysicalBody) => {
-        // oh no, cannot!
-        // todo: create body:body map
-        // matter.World.remove()
+        const matterBody = this._bodies.get(body);
+        matter.World.remove(this._engine.world, matterBody);
+        this._bodies.delete(body);
     }
 
     public addFixedRect(
@@ -37,9 +39,11 @@ export class MatterPhysicsEnvironment implements PhysicsEnvironment {
         heightPx: number
     ): PhysicalBody
     {
-        const rect = matter.Bodies.rectangle(centerXpx, centerYpx, widthPx, heightPx);
-        matter.World.add(this._engine.world, rect);
-        return new MatterBody(rect);
+        const matterRect = matter.Bodies.rectangle(centerXpx, centerYpx, widthPx, heightPx);
+        matter.World.add(this._engine.world, matterRect);
+        const body = new MatterBody(matterRect);
+        this._bodies.set(body, matterRect);
+        return body;
     }
 
     public addDynamicCircle(
@@ -48,8 +52,10 @@ export class MatterPhysicsEnvironment implements PhysicsEnvironment {
         radiusPx: number
     ): PhysicalBody
     {
-        const circle = matter.Bodies.circle(centerXpx, centerYpx, radiusPx);
-        matter.World.add(this._engine.world, circle);
-        return new MatterBody(circle);
+        const matterCircle = matter.Bodies.circle(centerXpx, centerYpx, radiusPx);
+        matter.World.add(this._engine.world, matterCircle);
+        const body = new MatterBody(matterCircle);
+        this._bodies.set(body, matterCircle);
+        return body;
     }
 }
