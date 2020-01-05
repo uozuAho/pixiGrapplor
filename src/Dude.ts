@@ -6,8 +6,8 @@ import { Grapple } from "./Grapple";
 
 export class Dude {
     public centerPx: Point2d;
-    public heightPx = 32;
-    public widthPx = 32;
+    public heightPx = 31;
+    public widthPx = 19;
 
     private _physicsBody: PhysicalBody;
     private _grapple: Grapple;

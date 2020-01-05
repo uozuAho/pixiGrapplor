@@ -26,11 +26,10 @@ export class DudeRenderer {
 
     public render = () => {
         if (this._assetsLoaded) {
-            const topLeft = this._dude.topLeft();
             const xScale = this._dude.isFacingLeft() ? 1 : -1;
             this._sprite.scale.x = xScale;
-            this._sprite.x = topLeft.x;
-            this._sprite.y = topLeft.y;
+            this._sprite.x = this._dude.centerPx.x;
+            this._sprite.y = this._dude.centerPx.y;
             // pixi renders the sprite automatically
         }
     };
