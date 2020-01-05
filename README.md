@@ -26,9 +26,10 @@ doesn't change length once attached.
     - grapple cancels after fixed length
 - dude faces left/right
 - grapple shoots in facing direction
-- don't use matter for platform running?
 - re-shoot grapple at any time. re-shooting cancels previous grapple
+- tests
 - grapple attaches to blocks
     - check swinging behaviour here. need physics? does it just work?
 - draw my own dude sprite
+- don't use matter for platform running?
 - move camera: level extends to right/left, can move there and camera follows

@@ -22,9 +22,13 @@ export class Grapple {
 
     public launch = (position: Point2d, angle: number) => {
         if (this.canLaunch()) {
-            console.log('launch!');
             this.state = GrappleState.fired;
             this._physicalBody = this._physicsEnv.addDynamicCircle(50, 0, 10);
+            this._physicalBody.addOnCollisionStart(this._physicsEnv, collision => {
+                this._physicsEnv.removeBody(this._physicalBody);
+                this._physicalBody = null;
+                this.state = GrappleState.ready;
+            });
         }
     }
 }

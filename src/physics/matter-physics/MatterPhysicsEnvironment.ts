@@ -14,6 +14,12 @@ export class MatterPhysicsEnvironment implements PhysicsEnvironment {
 
     public update = (elapsedMs: number) => matter.Engine.update(this._engine, elapsedMs);
 
+    public removeBody = (body: PhysicalBody) => {
+        // oh no, cannot!
+        // todo: create body:body map
+        // matter.World.remove()
+    }
+
     public addFixedRect(
         centerXpx: number,
         centerYpx: number,

@@ -3,8 +3,9 @@ import { Point2d } from "../Point2d";
 export type CollisionCallback = (collision: Collision) => void;
 
 export interface PhysicsEnvironment {
-    
     update: (elapsedMs: number) => void;
+
+    removeBody: (body: PhysicalBody) => void;
 
     addFixedRect(
         centerXpx: number,
