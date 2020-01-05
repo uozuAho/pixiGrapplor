@@ -43,7 +43,7 @@ export class Dude {
         }
         if (keysDown.grapple) {
             if (this._grapple.canLaunch()) {
-                this._grapple.launch(this._physicsBody.position(), 0);
+                this._grapple.launch(this._physicsBody.position());
             }
         }
     };

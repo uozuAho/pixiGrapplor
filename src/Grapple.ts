@@ -20,10 +20,14 @@ export class Grapple {
 
     public position = () => this._physicalBody.position();
 
-    public launch = (position: Point2d, angle: number) => {
+    public launch = (position: Point2d) => {
         if (this.canLaunch()) {
             this.state = GrappleState.fired;
-            this._physicalBody = this._physicsEnv.addDynamicCircle(50, 0, 10);
+            let {x, y} = position;
+            x += 30; // start away from launcher
+            this._physicalBody = this._physicsEnv.addDynamicCircle(x, y, 10);
+            this._physicalBody.accelerateX(10);
+            this._physicalBody.accelerateY(-20);
             this._physicalBody.addOnCollisionStart(this._physicsEnv, collision => {
                 this._physicsEnv.removeBody(this._physicalBody);
                 this._physicalBody = null;
