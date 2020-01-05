@@ -12,7 +12,7 @@ export class DudeRenderer {
 
     public loadAssets(app: pixi.Application) {
         const loader = pixi.Loader.shared;
-        loader.add('dude', 'img/hero.png').load((loader, resources) => {
+        loader.add('dude', 'img/dude_left.png').load((loader, resources) => {
             const sprite = new pixi.Sprite(resources.dude.texture);
             const topLeft = this._dude.topLeft();
             sprite.x = topLeft.x;

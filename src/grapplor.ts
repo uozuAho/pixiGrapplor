@@ -15,6 +15,7 @@ export class Grapplor {
     private _keysDown: KeysDown;
 
     public run = () => {
+        this._app.renderer.backgroundColor = 0xeeeeee;
         document.querySelector('#gamediv').appendChild(this._app.view);
         window.addEventListener('resize', this.resize);
         const physicsEnv = newPhysicsEnvironment();
