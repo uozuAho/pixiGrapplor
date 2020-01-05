@@ -10,7 +10,11 @@ export class GrappleRenderer {
     }
 
     public render = () => {
-        if (this._grapple.state === GrappleState.fired) {
+        if (this._grapple.state === GrappleState.ready) {
+            this._graphics.visible = false;
+        }
+        else if (this._grapple.state === GrappleState.fired) {
+            this._graphics.visible = true;
             this._graphics.clear();
             this._graphics.beginFill(0xaaaaaa);
             const {x, y} = this._grapple.position();
