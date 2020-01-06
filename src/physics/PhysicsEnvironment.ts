@@ -26,6 +26,11 @@ export interface PhysicsEnvironment {
         centerYpx: number,
         radiusPx: number
     ): PhysicalBody;
+
+    addStiffLink(
+        body: PhysicalBody,
+        point: Point2d
+    ): Constraint;
 }
 
 export interface PhysicalBody {
@@ -40,4 +45,8 @@ export interface PhysicalBody {
 export interface Collision {
     thisBody: PhysicalBody,
     otherBody: PhysicalBody
+}
+
+export interface Constraint {
+    head: () => Point2d;
 }

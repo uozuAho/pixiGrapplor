@@ -1,9 +1,12 @@
 import matter from 'matter-js';
 import {
-    PhysicalBody
+    PhysicalBody,
+    Constraint
 } from '../PhysicsEnvironment';
 import { PhysicsEnvironment } from "../PhysicsEnvironment";
 import { MatterBody } from './MatterBody';
+import { Point2d } from '../../Point2d';
+import { MatterConstraint } from './MatterConstraint';
 
 export class MatterPhysicsEnvironment implements PhysicsEnvironment {
     private _engine: matter.Engine;
@@ -57,5 +60,18 @@ export class MatterPhysicsEnvironment implements PhysicsEnvironment {
         const body = new MatterBody(matterCircle);
         this._bodies.set(body, matterCircle);
         return body;
+    }
+
+    public addStiffLink(
+        body: PhysicalBody,
+        point: Point2d
+    ): Constraint
+    {
+        const matterConstraint = matter.Constraint.create({
+            bodyA: this._bodies.get(body),
+            pointB: point
+        });
+        matter.World.add(this._engine.world, matterConstraint);
+        return new MatterConstraint(matterConstraint);
     }
 }

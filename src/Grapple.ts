@@ -1,7 +1,8 @@
 import { Point2d } from "./Point2d";
 import { 
     PhysicsEnvironment,
-    PhysicalBody
+    PhysicalBody,
+    Constraint
 } from "./physics/PhysicsEnvironment";
 
 export enum GrappleState {
@@ -15,6 +16,7 @@ export class Grapple {
 
     private _grappleHead: PhysicalBody = null;
     private _launchingBody: PhysicalBody = null;
+    private _grappleString: Constraint;
 
     constructor(private _physicsEnv: PhysicsEnvironment) {}
 
@@ -26,7 +28,7 @@ export class Grapple {
 
     public headPosition = () => {
         if (this.state == GrappleState.fired) return this._grappleHead.position();
-        if (this.state == GrappleState.attached) return new Point2d(50, 50);
+        if (this.state == GrappleState.attached) return this._grappleString.head();
     }
 
     public tailPosition = () => this._launchingBody.position();
@@ -52,9 +54,15 @@ export class Grapple {
         this._grappleHead.accelerateX(xAcceleration);
         this._grappleHead.accelerateY(-20);
         this._grappleHead.addOnCollisionStart(this._physicsEnv, collision => {
+            const collisionPoint = this._grappleHead.position();
             this._physicsEnv.removeBody(this._grappleHead);
             this._grappleHead = null;
+            this.initGrappleString(collisionPoint);
             this.state = GrappleState.attached;
         });
+    }
+
+    private initGrappleString = (collisionPoint: Point2d) => {
+        this._grappleString = this._physicsEnv.addStiffLink(this._launchingBody, collisionPoint);
     }
 }
