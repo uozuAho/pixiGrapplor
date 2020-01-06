@@ -14,9 +14,13 @@ export class Grapple {
     public state = GrappleState.ready;
 
     private _grappleHead: PhysicalBody = null;
-    private _grappleString: PhysicalBody = null;
+    private _launchingBody: PhysicalBody = null;
 
     constructor(private _physicsEnv: PhysicsEnvironment) {}
+
+    public setLauncher(body: PhysicalBody) {
+        this._launchingBody = body;
+    }
 
     public canLaunch = () => this.state === GrappleState.ready;
 
@@ -25,7 +29,7 @@ export class Grapple {
         if (this.state == GrappleState.attached) return new Point2d(50, 50);
     }
 
-    public tailPosition = () => new Point2d(100, 100);
+    public tailPosition = () => this._launchingBody.position();
 
     public launch = (launcherPosition: Point2d, launchLeft: boolean) => {
         if (this.canLaunch()) {

@@ -20,6 +20,7 @@ export class Dude {
 
     public setGrapple(grapple: Grapple) {
         this._grapple = grapple;
+        grapple.setLauncher(this._physicsBody);
     }
 
     public update = (elapsedMs: number, keysDown: KeysDown) => {
