@@ -6,25 +6,32 @@ import {
 
 export enum GrappleState {
     ready,
-    fired
+    fired,
+    attached
 }
 
 export class Grapple {
     public state = GrappleState.ready;
 
-    private _physicalBody: PhysicalBody = null;
+    private _grappleHead: PhysicalBody = null;
+    private _grappleString: PhysicalBody = null;
 
     constructor(private _physicsEnv: PhysicsEnvironment) {}
 
     public canLaunch = () => this.state === GrappleState.ready;
 
-    public position = () => this._physicalBody.position();
+    public headPosition = () => {
+        if (this.state == GrappleState.fired) return this._grappleHead.position();
+        if (this.state == GrappleState.attached) return new Point2d(50, 50);
+    }
+
+    public tailPosition = () => new Point2d(100, 100);
 
     public launch = (launcherPosition: Point2d, launchLeft: boolean) => {
         if (this.canLaunch()) {
             this.state = GrappleState.fired;
             const launchPosition = this.calculateLaunchPosition(launcherPosition, launchLeft);
-            this.initGrapplePhysicalBody(launchPosition, launchLeft);
+            this.initGrappleHead(launchPosition, launchLeft);
         }
     }
 
@@ -35,15 +42,15 @@ export class Grapple {
         return new Point2d(x + xOffset, y - 30);
     }
 
-    private initGrapplePhysicalBody = (position: Point2d, launchingLeft: boolean) => {
+    private initGrappleHead = (position: Point2d, launchingLeft: boolean) => {
         const xAcceleration = launchingLeft ? -10 : 10;
-        this._physicalBody = this._physicsEnv.addDynamicCircle(position.x, position.y, 10);
-        this._physicalBody.accelerateX(xAcceleration);
-        this._physicalBody.accelerateY(-20);
-        this._physicalBody.addOnCollisionStart(this._physicsEnv, collision => {
-            this._physicsEnv.removeBody(this._physicalBody);
-            this._physicalBody = null;
-            this.state = GrappleState.ready;
+        this._grappleHead = this._physicsEnv.addDynamicCircle(position.x, position.y, 10);
+        this._grappleHead.accelerateX(xAcceleration);
+        this._grappleHead.accelerateY(-20);
+        this._grappleHead.addOnCollisionStart(this._physicsEnv, collision => {
+            this._physicsEnv.removeBody(this._grappleHead);
+            this._grappleHead = null;
+            this.state = GrappleState.attached;
         });
     }
 }

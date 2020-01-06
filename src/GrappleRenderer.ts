@@ -10,16 +10,30 @@ export class GrappleRenderer {
     }
 
     public render = () => {
-        if (this._grapple.state === GrappleState.ready) {
-            this._graphics.visible = false;
-        }
-        else if (this._grapple.state === GrappleState.fired) {
-            this._graphics.visible = true;
-            this._graphics.clear();
-            this._graphics.beginFill(0xaaaaaa);
-            const {x, y} = this._grapple.position();
-            this._graphics.drawCircle(x, y, 4);
-            this._graphics.endFill();
+        switch(this._grapple.state) {
+            case GrappleState.ready: {
+                this._graphics.visible = false;
+                break;
+            }
+            case GrappleState.fired: {
+                this._graphics.visible = true;
+                this._graphics.clear();
+                this._graphics.beginFill(0xaaaaaa);
+                const {x, y} = this._grapple.headPosition();
+                this._graphics.drawCircle(x, y, 4);
+                this._graphics.endFill();
+                break;
+            }
+            case GrappleState.attached: {
+                this._graphics.visible = true;
+                this._graphics.clear();
+                this._graphics.lineStyle(1, 0x0, 1);
+                const headPos = this._grapple.headPosition();
+                const tailPos = this._grapple.tailPosition();
+                this._graphics.moveTo(tailPos.x, tailPos.y);
+                this._graphics.lineTo(headPos.x, headPos.y);
+                break;
+            }
         }
     };
 }
