@@ -1,13 +1,13 @@
 import * as pixi from 'pixi.js';
-import { Block } from './Block';
-import { BlockRenderer } from './BlockRenderer';
-import { Dude } from './Dude';
-import { DudeRenderer } from './DudeRenderer';
+import { Block } from './game_objects/block/Block';
+import { BlockRenderer } from './game_objects/block/BlockRenderer';
+import { Dude } from './game_objects/dude/Dude';
+import { DudeRenderer } from './game_objects/dude/DudeRenderer';
 import { KeysDown } from './KeysDown';
 import { newPhysicsEnvironment } from './physics/PhysicsEnvironmentFactory';
 import { PhysicsEnvironment } from "./physics/PhysicsEnvironment";
-import { Grapple } from './Grapple';
-import { GrappleRenderer } from './GrappleRenderer';
+import { Grapple } from './game_objects/grapple/Grapple';
+import { GrappleRenderer } from './game_objects/grapple/GrappleRenderer';
 
 export class Grapplor {
     private _app = new pixi.Application();

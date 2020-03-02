@@ -7,10 +7,8 @@ is similar to Speed Runners - grapple wire doesn't get caught on anything,
 doesn't change length once attached.
 
 # feature to implement, in order
-- grapple attaches to blocks *done*
-    - check swinging behaviour here. need physics? does it just work? *yeah*
-- re-shoot grapple at any time. re-shooting cancels previous grapple
 - debug rendering: draw object physical shapes
+- re-shoot grapple at any time. re-shooting cancels previous grapple
 - tests
 - don't use matter for platform running?
 - move camera: level extends to right/left, can move there and camera follows

@@ -1,10 +1,10 @@
-import { Point2d } from "./Point2d";
+import { Point2d } from "../../Point2d";
 import { 
     PhysicsEnvironment,
     PhysicalBody,
     Constraint
-} from "./physics/PhysicsEnvironment";
-import { Logger } from "./logger";
+} from "../../physics/PhysicsEnvironment";
+import { Logger } from "../../logger";
 
 export enum GrappleState {
     ready,

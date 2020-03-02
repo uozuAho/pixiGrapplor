@@ -1,8 +1,8 @@
-import { KeysDown } from "./KeysDown";
-import { Point2d } from "./Point2d";
-import { PhysicalBody } from './physics/PhysicsEnvironment';
-import { PhysicsEnvironment } from "./physics/PhysicsEnvironment";
-import { Grapple } from "./Grapple";
+import { KeysDown } from "../../KeysDown";
+import { Point2d } from "../../Point2d";
+import { PhysicalBody } from '../../physics/PhysicsEnvironment';
+import { PhysicsEnvironment } from "../../physics/PhysicsEnvironment";
+import { Grapple } from "../grapple/Grapple";
 
 export class Dude {
     public centerPx: Point2d;
