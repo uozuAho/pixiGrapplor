@@ -11,20 +11,23 @@ export interface PhysicsEnvironment {
         centerXpx: number,
         centerYpx: number,
         width: number,
-        height: number
-        ): void;
+        height: number,
+        label: string
+    ): void;
 
     addDynamicRect(
         x: number,
         y: number,
         widthPx: number,
-        heightPx: number
+        heightPx: number,
+        label: string
     ): PhysicalBody;
 
     addDynamicCircle(
         centerXpx: number,
         centerYpx: number,
-        radiusPx: number
+        radiusPx: number,
+        label: string
     ): PhysicalBody;
 
     addStiffLink(
@@ -34,6 +37,7 @@ export interface PhysicsEnvironment {
 }
 
 export interface PhysicalBody {
+    label: string;
     speed: () => number;
     position: () => Point2d;
     accelerateX: (accelerationPxPerSec: number) => void;

@@ -89,19 +89,18 @@ export class Grapplor {
     };
 
     private createWorld(physicsEnv: PhysicsEnvironment) {
-        const middleBlock = new Block(300, 420, 300, 20);
+        const middleBlock = new Block(300, 420, 300, 20, 'platform');
         middleBlock.addPhysics(physicsEnv);
         const middleBlockRenderer = new BlockRenderer(middleBlock);
         middleBlockRenderer.addToStage(this._app.stage);
 
         // walls at edge of world
-        for (const dims of [
-            //   x    y    w  h
-            [0,   300, 10,  600],
-            [600, 300, 10,  600],
-            [300, 600, 600, 10]
+        for (const w of [
+            {x:   0, y:   0, width:  10, height: 600, label: 'left wall'},
+            {x: 600, y: 300, width:  10, height: 600, label: 'right wall'},
+            {x: 300, y: 600, width: 600, height:  10, label: 'floor'},
         ]) {
-            const worldEdgeBarrier = new Block(dims[0], dims[1], dims[2], dims[3]);
+            const worldEdgeBarrier = new Block(w.x, w.y, w.width, w.height, w.label);
             worldEdgeBarrier.addPhysics(physicsEnv);
             const worldEdgeBarrierRenderer = new BlockRenderer(worldEdgeBarrier);
             worldEdgeBarrierRenderer.addToStage(this._app.stage);

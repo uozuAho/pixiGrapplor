@@ -4,6 +4,7 @@ import {
     PhysicalBody,
     Constraint
 } from "./physics/PhysicsEnvironment";
+import { Logger } from "./logger";
 
 export enum GrappleState {
     ready,
@@ -18,10 +19,13 @@ export class Grapple {
     private _launchingBody: PhysicalBody = null;
     private _grappleString: Constraint;
 
+    private _log: Logger;
+
     constructor(private _physicsEnv: PhysicsEnvironment) {}
 
     public setLauncher(body: PhysicalBody) {
         this._launchingBody = body;
+        this._log = Logger.getInstance();
     }
 
     public canLaunch = () => this.state === GrappleState.ready;
@@ -50,10 +54,11 @@ export class Grapple {
 
     private initGrappleHead = (position: Point2d, launchingLeft: boolean) => {
         const xAcceleration = launchingLeft ? -10 : 10;
-        this._grappleHead = this._physicsEnv.addDynamicCircle(position.x, position.y, 10);
+        this._grappleHead = this._physicsEnv.addDynamicCircle(position.x, position.y, 10, 'grappleHead');
         this._grappleHead.accelerateX(xAcceleration);
         this._grappleHead.accelerateY(-20);
         this._grappleHead.addOnCollisionStart(this._physicsEnv, collision => {
+            this.trace(`collide with ${collision.otherBody.label}`);
             const collisionPoint = this._grappleHead.position();
             this._physicsEnv.removeBody(this._grappleHead);
             this._grappleHead = null;
@@ -64,5 +69,9 @@ export class Grapple {
 
     private initGrappleString = (collisionPoint: Point2d) => {
         this._grappleString = this._physicsEnv.addStiffLink(this._launchingBody, collisionPoint);
+    }
+
+    private trace = (msg: string) => {
+        this._log.trace("Grapple: " + msg);
     }
 }

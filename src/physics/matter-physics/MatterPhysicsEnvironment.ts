@@ -29,9 +29,13 @@ export class MatterPhysicsEnvironment implements PhysicsEnvironment {
         centerXpx: number,
         centerYpx: number,
         width: number,
-        height: number)
+        height: number,
+        label: string)
     {
-        const rect = matter.Bodies.rectangle(centerXpx, centerYpx, width, height, {isStatic: true});
+        const rect = matter.Bodies.rectangle(centerXpx, centerYpx, width, height, {
+            label,
+            isStatic: true
+        });
         matter.World.add(this._engine.world, rect);
     }
 
@@ -39,12 +43,13 @@ export class MatterPhysicsEnvironment implements PhysicsEnvironment {
         centerXpx: number,
         centerYpx: number,
         widthPx: number,
-        heightPx: number
+        heightPx: number,
+        label: string
     ): PhysicalBody
     {
         const matterRect = matter.Bodies.rectangle(centerXpx, centerYpx, widthPx, heightPx);
         matter.World.add(this._engine.world, matterRect);
-        const body = new MatterBody(matterRect);
+        const body = new MatterBody(matterRect, label);
         this._bodies.set(body, matterRect);
         return body;
     }
@@ -52,12 +57,13 @@ export class MatterPhysicsEnvironment implements PhysicsEnvironment {
     public addDynamicCircle(
         centerXpx: number,
         centerYpx: number,
-        radiusPx: number
+        radiusPx: number,
+        label: string
     ): PhysicalBody
     {
         const matterCircle = matter.Bodies.circle(centerXpx, centerYpx, radiusPx);
         matter.World.add(this._engine.world, matterCircle);
-        const body = new MatterBody(matterCircle);
+        const body = new MatterBody(matterCircle, label);
         this._bodies.set(body, matterCircle);
         return body;
     }

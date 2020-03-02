@@ -54,7 +54,7 @@ export class Dude {
 
     public addPhysics = (env: PhysicsEnvironment) => {
         const { x, y } = this.centerPx;
-        this._physicsBody = env.addDynamicCircle(x, y, 16);
+        this._physicsBody = env.addDynamicCircle(x, y, 16, 'dude');
         this._physicsBody.addOnCollisionStart(env, collision => {
             this._canJump = true;
         });
