@@ -11,41 +11,28 @@ import { GrappleRenderer } from './game_objects/grapple/GrappleRenderer';
 import { CircleRenderer } from './renderers/circle_renderer';
 
 export class Grapplor {
-    private _pixiApp = new pixi.Application();
+    private _pixi = new pixi.Application();
+    private _physicsEnv = newPhysicsEnvironment();
 
     private _keysDown: KeysDown;
 
     public run = () => {
-        this._pixiApp.renderer.backgroundColor = 0xeeeeee;
-        document.querySelector('#gamediv').appendChild(this._pixiApp.view);
-        window.addEventListener('resize', this.resize);
-        const physicsEnv = newPhysicsEnvironment();
+        this.initWorld();
 
-        this.resize();
+        const {
+            dude,
+            dudeRenderer,
+            dudeDebugRenderer,
+            grappleRenderer
+        } = this.addGameObjects();
 
-        this._keysDown = new KeysDown();
-
-        this.addKeyHandlers();
-
-        const dude = new Dude(300, 350);
-        const dudeRenderer = new DudeRenderer(dude);
-        const dudeDebugRenderer = new CircleRenderer(this._pixiApp, 16);
-        dudeRenderer.loadAssets(this._pixiApp);
-        dude.addPhysics(physicsEnv);
-
-        const grapple = new Grapple(physicsEnv);
-        const grappleRenderer = new GrappleRenderer(grapple, this._pixiApp);
-        dude.setGrapple(grapple);
-
-        this.createWorld(physicsEnv);
-
-        this._pixiApp.ticker.add((elapsedFrames: number) => {
-            let ms = this._pixiApp.ticker.elapsedMS;
+        this._pixi.ticker.add((elapsedFrames: number) => {
+            let ms = this._pixi.ticker.elapsedMS;
             // hack: Keep timestep at/under 20ms
             //       Rendering/reload times often blow out due to... browser?
             //       Large timesteps cause dude to fall through walls, lol.
             if (ms > 20) { ms = 20 };
-            physicsEnv.update(ms);
+            this._physicsEnv.update(ms);
             dude.update(ms, this._keysDown);
             dudeRenderer.render();
             dudeDebugRenderer.render(dude.centerPx);
@@ -56,8 +43,8 @@ export class Grapplor {
     private resize = () => {
         // HACK: `as any`: Property 'clientWidth' does not exist
         //       on type 'Node & ParentNode' (it does, bad type)
-        const parent = this._pixiApp.view.parentNode as any;
-        this._pixiApp.renderer.resize(parent.clientWidth, parent.clientHeight);
+        const parent = this._pixi.view.parentNode as any;
+        this._pixi.renderer.resize(parent.clientWidth, parent.clientHeight);
     }
 
     private addKeyHandlers = () => {
@@ -91,11 +78,51 @@ export class Grapplor {
         }
     };
 
+    private addGameObjects() {
+        const { dude, dudeRenderer, dudeDebugRenderer } = this.initDude();
+        const { grapple, grappleRenderer } = this.initGrapple();
+        dude.setGrapple(grapple);
+        return { dude, dudeRenderer, dudeDebugRenderer, grappleRenderer };
+    }
+
+    private initGrapple() {
+        const grapple = new Grapple(this._physicsEnv);
+        const grappleRenderer = new GrappleRenderer(grapple, this._pixi);
+        return { grapple, grappleRenderer };
+    }
+
+    private initDude() {
+        const dude = new Dude(300, 350);
+        const dudeRenderer = new DudeRenderer(dude);
+        const dudeDebugRenderer = new CircleRenderer(this._pixi, 16);
+        dudeRenderer.loadAssets(this._pixi);
+        dude.addPhysics(this._physicsEnv);
+        return { dude, dudeRenderer, dudeDebugRenderer };
+    }
+
+    private initWorld() {
+        this.initGraphics();
+        this.initKeyHandlers();
+        this.createWorld(this._physicsEnv);
+    }
+
+    private initKeyHandlers() {
+        this._keysDown = new KeysDown();
+        this.addKeyHandlers();
+    }
+
+    private initGraphics() {
+        this._pixi.renderer.backgroundColor = 0xeeeeee;
+        document.querySelector('#gamediv').appendChild(this._pixi.view);
+        window.addEventListener('resize', this.resize);
+        this.resize();
+    }
+
     private createWorld(physicsEnv: PhysicsEnvironment) {
         const middleBlock = new Block(300, 420, 300, 20, 'platform');
         middleBlock.addPhysics(physicsEnv);
         const middleBlockRenderer = new BlockRenderer(middleBlock);
-        middleBlockRenderer.addToStage(this._pixiApp.stage);
+        middleBlockRenderer.addToStage(this._pixi.stage);
 
         // walls at edge of world
         for (const w of [
@@ -106,7 +133,7 @@ export class Grapplor {
             const worldEdgeBarrier = new Block(w.x, w.y, w.width, w.height, w.label);
             worldEdgeBarrier.addPhysics(physicsEnv);
             const worldEdgeBarrierRenderer = new BlockRenderer(worldEdgeBarrier);
-            worldEdgeBarrierRenderer.addToStage(this._pixiApp.stage);
+            worldEdgeBarrierRenderer.addToStage(this._pixi.stage);
         }
     }
 }
