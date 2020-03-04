@@ -9,7 +9,7 @@ import { DudeRenderer } from './DudeRenderer';
 import { CircleRenderer } from '../../renderers/circle_renderer';
 import { GrappleRenderer } from '../grapple/GrappleRenderer';
 
-export class Dude2 implements IGameObject {
+export class DudeContainer implements IGameObject {
     _dude: Dude;
     _dudeRenderer: DudeRenderer;
     _dudeDebugRenderer: CircleRenderer;
@@ -23,7 +23,6 @@ export class Dude2 implements IGameObject {
         this._dude.addPhysics(physicsEnv);
         const grapple = new Grapple(physicsEnv);
         this._grappleRenderer = new GrappleRenderer(grapple, pixiApp);
-        // todo: move grapple up to this object
         this._dude.setGrapple(grapple);
     }
 

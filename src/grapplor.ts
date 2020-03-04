@@ -1,14 +1,10 @@
 import * as pixi from 'pixi.js';
 import { Block } from './game_objects/block/Block';
 import { BlockRenderer } from './game_objects/block/BlockRenderer';
-import { Dude, Dude2 } from './game_objects/dude/Dude';
-import { DudeRenderer } from './game_objects/dude/DudeRenderer';
+import { DudeContainer } from './game_objects/dude/Dude';
 import { KeysDown } from './KeysDown';
 import { newPhysicsEnvironment } from './physics/PhysicsEnvironmentFactory';
 import { PhysicsEnvironment } from "./physics/PhysicsEnvironment";
-import { Grapple } from './game_objects/grapple/Grapple';
-import { GrappleRenderer } from './game_objects/grapple/GrappleRenderer';
-import { CircleRenderer } from './renderers/circle_renderer';
 
 export class Grapplor {
     private _pixi = new pixi.Application();
@@ -19,7 +15,7 @@ export class Grapplor {
     public run = () => {
         this.initWorld();
 
-        const dude2 = new Dude2(this._pixi, this._physicsEnv);
+        const dude = new DudeContainer(this._pixi, this._physicsEnv);
 
         this._pixi.ticker.add((elapsedFrames: number) => {
             let ms = this._pixi.ticker.elapsedMS;
@@ -28,8 +24,8 @@ export class Grapplor {
             //       Large timesteps cause dude to fall through walls, lol.
             if (ms > 20) { ms = 20 };
             this._physicsEnv.update(ms);
-            dude2.update(ms, this._keysDown);
-            dude2.render();
+            dude.update(ms, this._keysDown);
+            dude.render();
         });
     }
 
@@ -70,28 +66,6 @@ export class Grapplor {
             case 81: this._keysDown.grapple = false; break;
         }
     };
-
-    private addGameObjects() {
-        const { dude, dudeRenderer, dudeDebugRenderer } = this.initDude();
-        const { grapple, grappleRenderer } = this.initGrapple();
-        dude.setGrapple(grapple);
-        return { dude, dudeRenderer, dudeDebugRenderer, grappleRenderer };
-    }
-
-    private initGrapple() {
-        const grapple = new Grapple(this._physicsEnv);
-        const grappleRenderer = new GrappleRenderer(grapple, this._pixi);
-        return { grapple, grappleRenderer };
-    }
-
-    private initDude() {
-        const dude = new Dude(300, 350);
-        const dudeRenderer = new DudeRenderer(dude);
-        const dudeDebugRenderer = new CircleRenderer(this._pixi, 16);
-        dudeRenderer.loadAssets(this._pixi);
-        dude.addPhysics(this._physicsEnv);
-        return { dude, dudeRenderer, dudeDebugRenderer };
-    }
 
     private initWorld() {
         this.initGraphics();
