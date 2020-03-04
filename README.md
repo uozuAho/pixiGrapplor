@@ -8,7 +8,13 @@ doesn't change length once attached.
 
 # feature to implement, in order
 - debug rendering: draw object physical shapes
+    - create 'game object' container
+        - can house single physical object (maybe multiple in future?)
+        - can house multiple renderers
+        - has update() and render() methods
 - re-shoot grapple at any time. re-shooting cancels previous grapple
+- make a bit more of a level
 - tests
 - don't use matter for platform running?
+- colocate images with game objects
 - move camera: level extends to right/left, can move there and camera follows
