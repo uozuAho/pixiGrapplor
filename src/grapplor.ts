@@ -1,7 +1,7 @@
 import * as pixi from 'pixi.js';
 import { Block } from './game_objects/block/Block';
 import { BlockRenderer } from './game_objects/block/BlockRenderer';
-import { Dude } from './game_objects/dude/Dude';
+import { Dude, Dude2 } from './game_objects/dude/Dude';
 import { DudeRenderer } from './game_objects/dude/DudeRenderer';
 import { KeysDown } from './KeysDown';
 import { newPhysicsEnvironment } from './physics/PhysicsEnvironmentFactory';
@@ -19,12 +19,7 @@ export class Grapplor {
     public run = () => {
         this.initWorld();
 
-        const {
-            dude,
-            dudeRenderer,
-            dudeDebugRenderer,
-            grappleRenderer
-        } = this.addGameObjects();
+        const dude2 = new Dude2(this._pixi, this._physicsEnv);
 
         this._pixi.ticker.add((elapsedFrames: number) => {
             let ms = this._pixi.ticker.elapsedMS;
@@ -33,10 +28,8 @@ export class Grapplor {
             //       Large timesteps cause dude to fall through walls, lol.
             if (ms > 20) { ms = 20 };
             this._physicsEnv.update(ms);
-            dude.update(ms, this._keysDown);
-            dudeRenderer.render();
-            dudeDebugRenderer.render(dude.centerPx);
-            grappleRenderer.render();
+            dude2.update(ms, this._keysDown);
+            dude2.render();
         });
     }
 
