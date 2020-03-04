@@ -7,11 +7,9 @@ is similar to Speed Runners - grapple wire doesn't get caught on anything,
 doesn't change length once attached.
 
 # feature to implement, in order
+- dude game object
+    - is grapple a sub object of dude?
 - debug rendering: draw object physical shapes
-    - create 'game object' container
-        - can house single physical object (maybe multiple in future?)
-        - can house multiple renderers
-        - has update() and render() methods
 - re-shoot grapple at any time. re-shooting cancels previous grapple
 - make a bit more of a level
 - tests
