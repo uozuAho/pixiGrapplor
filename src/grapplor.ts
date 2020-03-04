@@ -1,7 +1,7 @@
 import * as pixi from 'pixi.js';
 import { Block } from './game_objects/block/Block';
 import { BlockRenderer } from './game_objects/block/BlockRenderer';
-import { DudeContainer } from './game_objects/dude/Dude';
+import { DudeContainer } from "./game_objects/dude/DudeContainer";
 import { KeysDown } from './KeysDown';
 import { newPhysicsEnvironment } from './physics/PhysicsEnvironmentFactory';
 import { PhysicsEnvironment } from "./physics/PhysicsEnvironment";
