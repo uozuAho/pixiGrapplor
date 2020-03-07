@@ -48,6 +48,9 @@ export class Dude {
         if (keysDown.grapple) {
             if (this._grapple.canLaunch()) {
                 this._grapple.launch(this._physicsBody.position(), this._facingLeft);
+            } else {
+                this._grapple.cancel();
+                console.log('asdf');
             }
         }
     };
