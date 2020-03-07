@@ -93,7 +93,7 @@ export class Grapplor {
 
         // walls at edge of world
         for (const w of [
-            {x:   0, y:   0, width:  10, height: 600, label: 'left wall'},
+            {x:   0, y: 300, width:  10, height: 600, label: 'left wall'},
             {x: 600, y: 300, width:  10, height: 600, label: 'right wall'},
             {x: 300, y: 600, width: 600, height:  10, label: 'floor'},
         ]) {
