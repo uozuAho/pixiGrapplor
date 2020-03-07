@@ -57,8 +57,7 @@ export class Grapple {
                 this._grappleHead = null;
             }
             if (this._grappleString) {
-                // todo: remove constraint
-                // this._physicsEnv.removeBody(this._grappleString);
+                this._physicsEnv.removeConstraint(this._grappleString);
             }
         }
     }

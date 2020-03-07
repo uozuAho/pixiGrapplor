@@ -6,6 +6,7 @@ export interface PhysicsEnvironment {
     update: (elapsedMs: number) => void;
 
     removeBody: (body: PhysicalBody) => void;
+    removeConstraint: (constraint: Constraint) => void;
 
     addFixedRect(
         centerXpx: number,

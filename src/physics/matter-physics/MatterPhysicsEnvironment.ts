@@ -11,10 +11,12 @@ import { MatterConstraint } from './MatterConstraint';
 export class MatterPhysicsEnvironment implements PhysicsEnvironment {
     private _engine: matter.Engine;
     private _bodies: Map<PhysicalBody, matter.Body>;
+    private _constraints: Map<Constraint, matter.Constraint>;
 
     constructor() {
         this._engine = matter.Engine.create();
         this._bodies = new Map();
+        this._constraints = new Map();
     }
 
     public update = (elapsedMs: number) => matter.Engine.update(this._engine, elapsedMs);
@@ -23,6 +25,12 @@ export class MatterPhysicsEnvironment implements PhysicsEnvironment {
         const matterBody = this._bodies.get(body);
         matter.World.remove(this._engine.world, matterBody);
         this._bodies.delete(body);
+    }
+
+    public removeConstraint = (constraint: Constraint) => {
+        const matterConstraint = this._constraints.get(constraint);
+        matter.World.remove(this._engine.world, matterConstraint);
+        this._constraints.delete(constraint);
     }
 
     public addFixedRect(
@@ -78,6 +86,8 @@ export class MatterPhysicsEnvironment implements PhysicsEnvironment {
             pointB: point
         });
         matter.World.add(this._engine.world, matterConstraint);
-        return new MatterConstraint(matterConstraint);
+        const constraint = new MatterConstraint(matterConstraint);
+        this._constraints.set(constraint, matterConstraint);
+        return constraint;
     }
 }
