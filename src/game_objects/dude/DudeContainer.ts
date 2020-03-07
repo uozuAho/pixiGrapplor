@@ -1,7 +1,7 @@
 import * as pixi from 'pixi.js';
 import { KeysDown } from "../../KeysDown";
 import { PhysicsEnvironment } from "../../physics/PhysicsEnvironment";
-import { Grapple } from "../grapple/Grapple";
+import { Grapple, GrappleState } from "../grapple/Grapple";
 import { IGameObject } from "../game_object";
 import { DudeRenderer } from './DudeRenderer';
 import { CircleRenderer } from '../../renderers/circle_renderer';
@@ -11,9 +11,11 @@ import { Dude } from './Dude';
 export class DudeContainer implements IGameObject {
 
     private _dude: Dude;
+    private _grapple: Grapple;
     private _dudeRenderer: DudeRenderer;
     private _dudeDebugRenderer: CircleRenderer;
     private _grappleRenderer: GrappleRenderer;
+    private _grappleDebugRenderer: CircleRenderer;
 
     constructor(pixiApp: pixi.Application, physicsEnv: PhysicsEnvironment) {
         this._dude = new Dude(300, 350);
@@ -21,9 +23,10 @@ export class DudeContainer implements IGameObject {
         this._dudeDebugRenderer = new CircleRenderer(pixiApp, 16);
         this._dudeRenderer.loadAssets(pixiApp);
         this._dude.addPhysics(physicsEnv);
-        const grapple = new Grapple(physicsEnv);
-        this._grappleRenderer = new GrappleRenderer(grapple, pixiApp);
-        this._dude.setGrapple(grapple);
+        this._grapple = new Grapple(physicsEnv);
+        this._grappleRenderer = new GrappleRenderer(this._grapple, pixiApp);
+        this._grappleDebugRenderer = new CircleRenderer(pixiApp, 10);
+        this._dude.setGrapple(this._grapple);
     }
 
     public update = (elapsedMs: number, keys: KeysDown) => {
@@ -34,5 +37,8 @@ export class DudeContainer implements IGameObject {
         this._dudeRenderer.render();
         this._dudeDebugRenderer.render(this._dude.centerPx);
         this._grappleRenderer.render();
+        if (this._grapple.state === GrappleState.fired) {
+            this._grappleDebugRenderer.render(this._grapple.headPosition())
+        }
     };
 }
