@@ -30,6 +30,10 @@ export class Grapple {
 
     public canLaunch = () => this.state === GrappleState.ready;
 
+    public canCancel = () =>
+           this.state === GrappleState.attached
+        || this.state === GrappleState.fired;
+
     public headPosition = () => {
         if (this.state == GrappleState.fired) return this._grappleHead.position();
         if (this.state == GrappleState.attached) return this._grappleString.head();
@@ -42,6 +46,19 @@ export class Grapple {
             this.state = GrappleState.fired;
             const launchPosition = this.calculateLaunchPosition(launcherPosition, launchLeft);
             this.initGrappleHead(launchPosition, launchLeft);
+        }
+    }
+
+    public cancel = () => {
+        if (this.canCancel()) {
+            this.state = GrappleState.ready;
+            if (this._grappleHead) {
+                this._physicsEnv.removeBody(this._grappleHead);
+                this._grappleHead = null;
+            }
+            if (this._grappleString) {
+                this._physicsEnv.removeConstraint(this._grappleString);
+            }
         }
     }
 

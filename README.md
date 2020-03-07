@@ -7,8 +7,8 @@ is similar to Speed Runners - grapple wire doesn't get caught on anything,
 doesn't change length once attached.
 
 # feature to implement, in order
-- re-shoot grapple at any time. re-shooting cancels previous grapple
 - make a bit more of a level
+- bug: sometimes removing constraint fails and freezes game
 - tests
 - don't use matter for platform running?
 - colocate images with game objects

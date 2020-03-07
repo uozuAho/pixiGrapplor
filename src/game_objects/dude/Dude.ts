@@ -13,6 +13,7 @@ export class Dude {
     private _grapple: Grapple;
     private _canJump = false;
     private _facingLeft = true;
+    private _grappleKeyWasUp = true;
 
     public constructor(x: number, y: number) {
         this.centerPx = new Point2d(x, y);
@@ -46,9 +47,20 @@ export class Dude {
             }
         }
         if (keysDown.grapple) {
-            if (this._grapple.canLaunch()) {
-                this._grapple.launch(this._physicsBody.position(), this._facingLeft);
+            if (this._grappleKeyWasUp) {
+                this._grappleKeyWasUp = false;
+                console.log('grapple down');
+                if (this._grapple.canLaunch()) {
+                    this._grapple.launch(this._physicsBody.position(), this._facingLeft);
+                } else {
+                    this._grapple.cancel();
+                }
+            } 
+        } else {
+            if (!this._grappleKeyWasUp) {
+                console.log('grapple up');
             }
+            this._grappleKeyWasUp = true;
         }
     };
 
